@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Texto extraído</title>
+    <title>Subir Imagen</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+    <!-- Script para cargar Google Translate -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -16,73 +17,19 @@
     </script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    <style>
-        .legal-text {
-            display: none;
-            background-color: #f1f1f1;
-            padding: 20px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            max-width: 500px;
-            font-size: 14px;
-            border-radius: 5px;
-        }
-        .legal-popup {
-            font-size: 12px;
-            color: blue;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
     <!-- Contenedor para Google Translate -->
     <div id="google_translate_element" style="position: absolute; top: 10px; right: 10px;"></div>
 
-    <h1>Texto extraído del documento</h1>
+    <h1>Subir Imagen para Extraer Texto</h1>
 
-    <!-- Formulario para enviar el texto extraído por correo -->
-    <form action="/send_email" method="POST">
-        <!-- Textarea con el texto extraído -->
-        <textarea name="extracted_text" rows="20" cols="80" readonly>{{ extracted_text }}</textarea>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="file">Selecciona una imagen (JPG, PNG, GIF):</label>
+        <input type="file" id="file" name="file" accept="image/*" required>
         <br><br>
-
-        <!-- Campos para obtener teléfono y dirección -->
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" required><br><br>
-
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" required><br><br>
-
-        <!-- Checkbox para la aceptación de los términos y condiciones -->
-        <label>
-            <input type="checkbox" id="checkbox_aceptacion" name="checkbox_aceptacion" disabled>
-            Acepto el tratamiento de mis datos personales 
-            (<a href="#" onclick="toggleAviso(); return false;">ver aviso legal</a>)
-        </label>
-
-        <!-- Aviso legal desplegable -->
-        <div id="avisoLegal" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
-            <h3>📄 Aviso sobre el tratamiento de datos personales</h3>
-            <p>...</p> <!-- Puedes incluir el texto legal completo aquí -->
-        </div>
-
-        <!-- Script para mostrar el aviso legal -->
-        <script>
-            let avisoVisible = false;
-            function toggleAviso() {
-                var aviso = document.getElementById("avisoLegal");
-                aviso.style.display = aviso.style.display === "none" ? "block" : "none";
-                avisoVisible = !avisoVisible;
-                document.getElementById("checkbox_aceptacion").disabled = !avisoVisible;
-            }
-        </script>
-
-        <!-- Botón para enviar el formulario -->
-        <input type="submit" value="Confirmar y enviar por correo">
+        <input type="submit" value="Subir Imagen">
     </form>
-    <br>
 
-    <!-- Enlace para volver a la página de inicio -->
-    <a href="/">Volver</a>
 </body>
 </html>
