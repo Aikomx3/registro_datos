@@ -25,8 +25,8 @@
         <input type="text" id="access_token" name="access_token" required><br><br>
 
         <label for="file">Selecciona hasta 10 imágenes (JPG, PNG) o usa la cámara:</label>
-        <!-- Se habilita la opción de la cámara y la galería -->
-        <input type="file" id="file" name="file" accept="image/*" multiple required><br><br>
+        <!-- Atributo capture="camera" para abrir directamente la cámara en dispositivos móviles -->
+        <input type="file" id="file" name="file" accept="image/*" multiple capture="camera" required><br><br>
 
         <input type="submit" value="Subir Imágenes">
     </form>

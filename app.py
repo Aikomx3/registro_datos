@@ -35,17 +35,24 @@ def allowed_file(filename):
 
 
 def enhance_image(image_path):
-    img = Image.open(image_path)
-    img = img.convert('L')  # Convertir a escala de grises
-    img = img.filter(ImageFilter.MedianFilter())  # Filtro para reducir el ruido
-    enhancer = ImageEnhance.Contrast(img)
-    img = enhancer.enhance(2.5)  # Aumentamos aún más el contraste para mejor legibilidad
-    return img
+    try:
+        img = Image.open(image_path)
+        img = img.convert('L')  # Convertir a escala de grises
+        # Evitar filtros agresivos
+        enhancer = ImageEnhance.Contrast(img)
+        img = enhancer.enhance(2)  # Mejora del contraste de manera más sutil
+        img = img.filter(ImageFilter.SHARPEN())  # Usamos un filtro de enfoque más suave
+        return img
+    except Exception as e:
+        print(f"Error al mejorar la imagen: {e}")
+        return None
 
 
 def extract_text_from_image(image_path, languages='eng+spa+fra+deu+ita+por+rus+pol+ukr+ces+ron+jpn+chi_sim+chi_tra+kor+hin+ara'):
     try:
         img = enhance_image(image_path)
+        if img is None:
+            return ""
         # Usamos pytesseract con múltiples idiomas
         text = pytesseract.image_to_string(img, lang=languages)
         print("Texto extraído:", text)  # Para depuración
