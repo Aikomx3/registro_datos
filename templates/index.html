@@ -4,32 +4,30 @@
     <meta charset="UTF-8">
     <title>Subir Imagen</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <!-- Script para cargar Google Translate -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
-                pageLanguage: 'es',  // Idioma original de la página
-                includedLanguages: 'en,es,fr,de,it',  // Idiomas a los que puedes traducir
+                pageLanguage: 'es',
+                includedLanguages: 'en,es,fr,de,it',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
-    <!-- Contenedor para Google Translate -->
     <div id="google_translate_element" style="position: absolute; top: 10px; right: 10px;"></div>
 
     <h1>Subir Imagen para Extraer Texto</h1>
 
     <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file">Selecciona una imagen (JPG, PNG, GIF):</label>
-        <input type="file" id="file" name="file" accept="image/*" required>
-        <br><br>
-        <input type="submit" value="Subir Imagen">
-    </form>
+        <label for="access_token">Introduce tu token de acceso:</label>
+        <input type="text" id="access_token" name="access_token" required><br><br>
 
+        <label for="file">Selecciona hasta 10 imágenes (JPG, PNG):</label>
+        <input type="file" id="file" name="file" accept="image/*" multiple required><br><br>
+
+        <input type="submit" value="Subir Imágenes">
+    </form>
 </body>
 </html>
