@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 import pytesseract
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
@@ -17,6 +17,7 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Configuración de correo electrónico
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
@@ -34,16 +35,19 @@ def allowed_file(filename):
 
 
 def enhance_image(image_path):
-    img = Image.open(image_path).convert('L')  # Blanco y negro
+    img = Image.open(image_path)
+    img = img.convert('L')  # Convertir a escala de grises
+    img = img.filter(ImageFilter.MedianFilter())  # Filtro para reducir el ruido
     enhancer = ImageEnhance.Contrast(img)
-    img = enhancer.enhance(2.0)  # Mejora contraste
+    img = enhancer.enhance(2.5)  # Aumentamos aún más el contraste para mejor legibilidad
     return img
 
 
-def extract_text_from_image(image_path):
+def extract_text_from_image(image_path, languages='eng+spa+fra+deu+ita+por+rus+pol+ukr+ces+ron+jpn+chi_sim+chi_tra+kor+hin+ara'):
     try:
         img = enhance_image(image_path)
-        text = pytesseract.image_to_string(img, lang='eng+spa')
+        # Usamos pytesseract con múltiples idiomas
+        text = pytesseract.image_to_string(img, lang=languages)
         print("Texto extraído:", text)  # Para depuración
         return text
     except Exception as e:
@@ -78,10 +82,14 @@ def upload_file():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
+            # Extraemos texto en todos los idiomas posibles
             extracted_text += extract_text_from_image(path) + "\n\n"
             os.remove(path)
 
-    return render_template('results.html', extracted_text=extracted_text)
+    if extracted_text:
+        return render_template('results.html', extracted_text=extracted_text)
+    else:
+        return "<h2>No se extrajo texto de las imágenes.</h2><a href='/'>Volver</a>"
 
 
 @app.route('/send_email', methods=['POST'])
