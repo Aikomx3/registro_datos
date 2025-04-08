@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: your-service-name
-    env: python
-    buildCommand: "apt-get update && apt-get install -y tesseract-ocr"
-    startCommand: "gunicorn app:app"
