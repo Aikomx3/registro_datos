@@ -10,6 +10,9 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# Establecer la ubicación de Tesseract (esto es necesario si Tesseract no está en el PATH)
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Actualiza esta ruta si es necesario
+
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -41,6 +44,7 @@ def extract_text_from_image(image_path):
     try:
         img = enhance_image(image_path)
         text = pytesseract.image_to_string(img, lang='eng+spa')
+        print("Texto extraído:", text)  # Para depuración
         return text
     except Exception as e:
         print(f"Error al procesar imagen: {e}")
