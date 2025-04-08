@@ -24,8 +24,9 @@
         <label for="access_token">Introduce tu token de acceso:</label>
         <input type="text" id="access_token" name="access_token" required><br><br>
 
-        <label for="file">Selecciona hasta 10 imágenes (JPG, PNG):</label>
-        <input type="file" id="file" name="file" accept="image/*" multiple required><br><br>
+        <!-- Nuevo campo de entrada para tomar fotos o seleccionar imágenes -->
+        <label for="file">Selecciona hasta 10 imágenes (JPG, PNG) o usa la cámara:</label>
+        <input type="file" id="file" name="file" accept="image/*" multiple capture="camera" required><br><br>
 
         <input type="submit" value="Subir Imágenes">
     </form>
