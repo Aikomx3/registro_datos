@@ -11,7 +11,8 @@ load_dotenv()
 app = Flask(__name__)
 
 # Establecer la ubicación de Tesseract (esto es necesario si Tesseract no está en el PATH)
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Actualiza esta ruta si es necesario
+pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_PATH', '/usr/bin/tesseract')
+ # Actualiza esta ruta si es necesario
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
